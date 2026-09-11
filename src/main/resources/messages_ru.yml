@@ -1,0 +1,46 @@
+prefix: '<dark_gray>[<aqua>TMC StaffWork</aqua>]</dark_gray> '
+error:
+  no-permission: '<red>Недостаточно прав.</red>'
+  players-only: '<red>Эта команда доступна только игроку.</red>'
+  invalid-arguments: '<red>Некорректные аргументы. Используйте <white>/staffwork help</white>.</red>'
+  invalid-status: '<red>Неизвестный статус.</red>'
+  invalid-period: '<red>Период должен быть today, week, month или all.</red>'
+  invalid-rank: '<red>Ранг не существует или имеет некорректный идентификатор.</red>'
+  player-not-found: '<red>Игрок не найден. Для нового сотрудника он должен быть онлайн либо UUID должен быть указан явно.</red>'
+  not-ready: '<yellow>Плагин ещё подключается к хранилищу. Повторите команду через несколько секунд.</yellow>'
+  internal: '<red>Операция не выполнена. Подробности записаны в журнал сервера.</red>'
+  rate-limit: '<yellow>Подождите перед повторной чувствительной операцией.</yellow>'
+staff:
+  not-found: '<red>Сотрудник не найден.</red>'
+  not-enabled: '<red>Учётная запись сотрудника отключена.</red>'
+  already-exists: '<yellow>Сотрудник уже добавлен.</yellow>'
+  added: '<green>Сотрудник <white><player></white> добавлен с рангом <white><rank></white>.</green>'
+  removed: '<green>Сотрудник удалён.</green>'
+  rank-set: '<green>Для <white><player></white> установлен ранг <white><rank></white>.</green>'
+  enabled: '<green>Сотрудник включён.</green>'
+  disabled: '<yellow>Сотрудник отключён.</yellow>'
+  list-header: '<aqua>Сотрудники (<count>):</aqua>'
+  list-item: '<gray>• <white><player></white> — <rank> — <status></gray>'
+  info: '<aqua><player></aqua><gray>: UUID <white><uuid></white>, ранг <white><rank></white>, активен: <white><enabled></white>, добавлен <white><added></white>.</gray>'
+session:
+  already-active: '<yellow>Рабочая сессия уже активна.</yellow>'
+  not-active: '<yellow>Активная рабочая сессия не найдена.</yellow>'
+  started: '<green>Рабочая сессия начата.</green>'
+  stopped: '<green>Рабочая сессия завершена.</green>'
+  status-changed: '<green>Статус изменён на <white><status></white>.</green>'
+  current-status: '<gray>Текущий статус: <white><status></white>.</gray>'
+statistics:
+  result: '<aqua>Статистика <player></aqua><gray>: учтено <white><time></white>, текущая сессия <white><current></white>.</gray>'
+command:
+  version: '<aqua>TMC StaffWork</aqua> <white>v<version></white><gray>, платформа: <platform>.</gray>'
+  reloaded: '<green>Конфигурация и сообщения перезагружены.</green>'
+  restart-required: '<yellow>Тип хранилища изменён. Для его применения требуется перезапуск.</yellow>'
+  help: |-
+    <aqua>TMC StaffWork — команды</aqua>
+    <gray>/sw info [игрок], /sw list, /sw start, /sw stop</gray>
+    <gray>/sw status [статус], /sw stats [игрок] [today|week|month|all]</gray>
+    <gray>/sw add, remove, rank set, enable, disable, reload, version</gray>
+telegram:
+  disabled: '<yellow>Интеграция с Telegram отключена.</yellow>'
+  code: '<green>Код привязки: <white><code></white>. Отправьте боту команду <white>/link <code></white>. Код действует <seconds> секунд.</green>'
+  unlinked: '<green>Привязка Telegram удалена.</green>'

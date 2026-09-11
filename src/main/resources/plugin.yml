@@ -1,0 +1,61 @@
+name: TMCStaffWork
+version: '${version}'
+main: su.twomc.staffwork.TMCStaffWork
+api-version: '1.20'
+author: younaxo
+website: https://github.com/younaxo/tmc-staffwork
+description: Управление персоналом и учёт рабочего времени для Minecraft-сервера
+folia-supported: true
+softdepend:
+  - PlaceholderAPI
+commands:
+  staffwork:
+    description: Управление персоналом и рабочим временем
+    usage: /staffwork help
+    aliases: [sw]
+permissions:
+  tmc.staffwork.user:
+    description: Базовые команды сотрудника
+    default: false
+    children:
+      tmc.staffwork.command.help: true
+      tmc.staffwork.command.version: true
+      tmc.staffwork.staff.info.self: true
+      tmc.staffwork.status.set.self: true
+      tmc.staffwork.session.start.self: true
+      tmc.staffwork.session.stop.self: true
+      tmc.staffwork.statistics.view.self: true
+      tmc.staffwork.telegram.link.self: true
+      tmc.staffwork.telegram.unlink.self: true
+  tmc.staffwork.staff:
+    description: Возможности сотрудника и просмотр коллег
+    default: false
+    children:
+      tmc.staffwork.user: true
+      tmc.staffwork.staff.list: true
+  tmc.staffwork.moderator:
+    description: Управление статусами сотрудников
+    default: false
+    children:
+      tmc.staffwork.staff: true
+      tmc.staffwork.staff.info.others: true
+      tmc.staffwork.status.set.others: true
+      tmc.staffwork.session.manage.others: true
+      tmc.staffwork.statistics.view.others: true
+  tmc.staffwork.admin:
+    description: Полное администрирование StaffWork
+    default: op
+    children:
+      tmc.staffwork.moderator: true
+      tmc.staffwork.staff.add: true
+      tmc.staffwork.staff.remove: true
+      tmc.staffwork.staff.rank.set: true
+      tmc.staffwork.staff.enabled.set: true
+      tmc.staffwork.command.reload: true
+      tmc.staffwork.admin.reload: true
+      tmc.staffwork.admin.database.migrate: true
+  tmc.staffwork.*:
+    description: Все права TMC StaffWork
+    default: op
+    children:
+      tmc.staffwork.admin: true

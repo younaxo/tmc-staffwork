@@ -1,0 +1,75 @@
+# Версия структуры конфигурации. Не изменяйте вручную.
+config-version: 1
+
+general:
+  # Уникальный идентификатор сервера в общей базе данных.
+  server-id: default
+  # В базе время всегда хранится в UTC. Этот пояс используется для периодов и вывода.
+  time-zone: Europe/Moscow
+
+storage:
+  # YAML, SQLITE, H2 или MYSQL. Изменение требует перезапуска сервера.
+  type: SQLITE
+  pool:
+    maximum-size: 5
+    connection-timeout-ms: 10000
+  mysql:
+    host: 127.0.0.1
+    port: 3306
+    database: tmc_staffwork
+    username: staffwork
+    # Никогда не публикуйте config.yml с заполненным паролем.
+    password: ''
+
+ranks:
+  staff:
+    display-name: Сотрудник
+  moderator:
+    display-name: Модератор
+  administrator:
+    display-name: Администратор
+
+work-time:
+  counted-statuses:
+    - WORKING
+    - MEETING
+    - TRAINING
+
+automation:
+  join:
+    auto-start-session: false
+    status: OFF_DUTY
+  quit:
+    # STOP завершает, PAUSE переводит в BREAK, KEEP оставляет без изменения.
+    behavior: STOP
+  afk:
+    threshold-seconds: 300
+    return-on-activity: true
+
+placeholder-api:
+  output-format: LEGACY
+  status-colors:
+    WORKING: '&a'
+    AFK: '&e'
+    OFF_DUTY: '&c'
+    BREAK: '&7'
+    MEETING: '&7'
+    TRAINING: '&7'
+
+telegram:
+  enabled: false
+  # Токен задаётся только на сервере. Не добавляйте его в Git.
+  bot-token: ''
+  polling-seconds: 3
+  link-code-ttl-seconds: 300
+  request-cooldown-seconds: 30
+  events:
+    - session-start
+    - session-stop
+    - staff-join
+    - staff-quit
+  templates:
+    session-start: '{player} начал рабочую сессию.'
+    session-stop: '{player} завершил рабочую сессию.'
+    staff-join: '{player} вошёл на сервер.'
+    staff-quit: '{player} вышел с сервера.'
