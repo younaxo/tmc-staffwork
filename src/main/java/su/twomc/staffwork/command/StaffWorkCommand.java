@@ -235,6 +235,22 @@ public final class StaffWorkCommand implements CommandExecutor, TabCompleter {
     }
 
     private void status(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+            UUID uuid = requirePlayer(sender, Permissions.STATUS_SELF);
+            if (uuid != null) {
+                complete(
+                        sender,
+                        plugin.workService().activeSession(uuid),
+                        active -> messages.send(
+                                sender,
+                                "session.current-status",
+                                "status",
+                                active.map(WorkSession::currentStatus)
+                                        .orElse(WorkStatus.OFF_DUTY)
+                                        .displayName()));
+            }
+            return;
+        }
         if (args.length == 2) {
             UUID uuid = requirePlayer(sender, Permissions.STATUS_SELF);
             WorkStatus parsed = WorkStatus.parse(args[1]).orElse(null);

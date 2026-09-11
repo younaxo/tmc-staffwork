@@ -2,9 +2,12 @@ package su.twomc.staffwork.platform;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
@@ -57,6 +60,39 @@ public final class PlatformScheduler {
         }
     }
 
+    public void runRegion(Location location, Runnable action) {
+        if (!folia) {
+            Bukkit.getScheduler().runTask(plugin, action);
+            return;
+        }
+        try {
+            Object scheduler = Bukkit.class.getMethod("getRegionScheduler").invoke(null);
+            scheduler
+                    .getClass()
+                    .getMethod("execute", Plugin.class, Location.class, Runnable.class)
+                    .invoke(scheduler, plugin, location, action);
+        } catch (ReflectiveOperationException exception) {
+            plugin.getLogger().log(Level.SEVERE, "Не удалось выполнить региональную задачу Folia", unwrap(exception));
+        }
+    }
+
+    public void runAsync(Runnable action) {
+        if (!folia) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, action);
+            return;
+        }
+        invokeAsync("runNow", 2, plugin, consumer(action));
+    }
+
+    public void runAsyncDelayed(Runnable action, Duration delay) {
+        if (!folia) {
+            long ticks = Math.max(1L, delay.toMillis() / 50L);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, action, ticks);
+            return;
+        }
+        invokeAsync("runDelayed", 4, plugin, consumer(action), Math.max(1L, delay.toMillis()), TimeUnit.MILLISECONDS);
+    }
+
     private void invokeGlobal(String methodName, Class<?>[] signature, Object... arguments) {
         try {
             Object scheduler =
@@ -84,6 +120,25 @@ public final class PlatformScheduler {
 
     private java.util.function.Consumer<Object> consumer(Runnable action) {
         return ignored -> action.run();
+    }
+
+    private void invokeAsync(String name, int parameterCount, Object... arguments) {
+        try {
+            Object scheduler = Bukkit.class.getMethod("getAsyncScheduler").invoke(null);
+            Method selected = null;
+            for (Method method : scheduler.getClass().getMethods()) {
+                if (method.getName().equals(name) && method.getParameterCount() == parameterCount) {
+                    selected = method;
+                    break;
+                }
+            }
+            if (selected == null) {
+                throw new NoSuchMethodException(name);
+            }
+            selected.invoke(scheduler, arguments);
+        } catch (ReflectiveOperationException exception) {
+            plugin.getLogger().log(Level.SEVERE, "Не удалось выполнить асинхронную задачу Folia", unwrap(exception));
+        }
     }
 
     private static Throwable unwrap(ReflectiveOperationException exception) {

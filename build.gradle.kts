@@ -19,6 +19,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
 
     implementation("net.kyori:adventure-platform-bukkit:4.4.1")
+    implementation("net.kyori:adventure-text-minimessage:4.26.1")
     implementation("com.zaxxer:HikariCP:6.3.3")
     implementation("org.xerial:sqlite-jdbc:3.50.3.0")
     implementation("com.h2database:h2:2.3.232")
@@ -34,7 +35,8 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withSourcesJar()
 }
 
@@ -82,6 +84,7 @@ checkstyle {
 }
 
 tasks.shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     archiveBaseName.set("TMCStaffWork")
     archiveClassifier.set("")
     relocate("com.zaxxer.hikari", "su.twomc.staffwork.libs.hikari")

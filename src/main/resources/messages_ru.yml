@@ -28,6 +28,7 @@ session:
   started: '<green>Рабочая сессия начата.</green>'
   stopped: '<green>Рабочая сессия завершена.</green>'
   status-changed: '<green>Статус изменён на <white><status></white>.</green>'
+  current-status: '<gray>Текущий статус: <white><status></white>.</gray>'
 statistics:
   result: '<aqua>Статистика <player></aqua><gray>: учтено <white><time></white>, текущая сессия <white><current></white>.</gray>'
 command:

@@ -11,6 +11,7 @@ out/
 .settings/
 .vscode/
 run/
+.runtime-test/
 logs/
 plugins/
 *.db
