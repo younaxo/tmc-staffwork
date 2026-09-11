@@ -1,0 +1,39 @@
+name: Сборка и тесты
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Java ${{ matrix.java }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['17', '21']
+    steps:
+      - name: Получение исходного кода
+        uses: actions/checkout@v6
+      - name: Установка Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: gradle
+      - name: Проверка Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+      - name: Полная проверка
+        run: ./gradlew build --no-daemon
+      - name: Загрузка готового JAR
+        if: matrix.java == '21'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TMCStaffWork-${{ github.sha }}
+          path: build/libs/TMCStaffWork-0.1.jar
+          if-no-files-found: error
+          retention-days: 14

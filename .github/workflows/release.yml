@@ -1,0 +1,40 @@
+name: Публикация релиза
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Получение исходного кода
+        uses: actions/checkout@v6
+      - name: Установка Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+      - name: Проверка версии тега
+        shell: bash
+        run: |
+          expected="v$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)"
+          test "${GITHUB_REF_NAME}" = "${expected}"
+      - name: Сборка релиза
+        run: ./gradlew clean build --no-daemon
+      - name: Контрольная сумма
+        run: sha256sum build/libs/TMCStaffWork-0.1.jar > build/libs/TMCStaffWork-0.1.jar.sha256
+      - name: Публикация GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: TMC StaffWork ${{ github.ref_name }}
+          body_path: CHANGELOG.md
+          files: |
+            build/libs/TMCStaffWork-0.1.jar
+            build/libs/TMCStaffWork-0.1.jar.sha256
+          fail_on_unmatched_files: true
