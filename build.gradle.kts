@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
     compileOnly("me.clip:placeholderapi:2.11.6")
 
     implementation("net.kyori:adventure-platform-bukkit:4.4.1")
@@ -30,7 +30,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.mockito:mockito-core:5.20.0")
-    testImplementation("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
     testImplementation("me.clip:placeholderapi:2.11.6")
 }
 
