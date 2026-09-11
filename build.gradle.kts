@@ -23,7 +23,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:6.3.3")
     implementation("org.xerial:sqlite-jdbc:3.50.3.0")
     implementation("com.h2database:h2:2.3.232")
-    implementation("com.mysql:mysql-connector-j:9.4.0")
+    implementation("com.mysql:mysql-connector-j:26.7.0")
     implementation("com.google.code.gson:gson:2.13.2")
 
     testImplementation(platform("org.junit:junit-bom:5.13.4"))
