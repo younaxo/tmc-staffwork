@@ -440,7 +440,7 @@ public final class StaffWorkCommand implements CommandExecutor, TabCompleter {
     }
 
     private void reply(CommandSender sender, Runnable action) {
-        if (sender instanceof Player player && player.isOnline()) {
+        if (sender instanceof Player player) {
             plugin.scheduler().runEntity(player, action);
         } else {
             plugin.scheduler().runGlobal(action);

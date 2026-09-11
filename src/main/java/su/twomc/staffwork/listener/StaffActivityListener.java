@@ -33,26 +33,27 @@ public final class StaffActivityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        lastActivity.put(player.getUniqueId(), clock.instant());
+        UUID uuid = player.getUniqueId();
+        String playerName = player.getName();
+        lastActivity.put(uuid, clock.instant());
         plugin.staffService()
-                .find(player.getUniqueId())
+                .find(uuid)
                 .thenAccept(member -> member.ifPresent(ignored -> {
-                    plugin.staffService().recordSeen(player.getUniqueId(), player.getName());
-                    plugin.telegram().notifyEvent("staff-join", player.getName());
+                    plugin.staffService().recordSeen(uuid, playerName);
+                    plugin.telegram().notifyEvent("staff-join", playerName);
                     PluginSettings.Automation automation = plugin.settings().automation();
                     if (automation.autoStartOnJoin()) {
                         plugin.workService()
-                                .start(player.getUniqueId())
+                                .start(uuid)
                                 .thenCompose(result -> {
                                     if (result.success() && automation.joinStatus() != WorkStatus.WORKING) {
-                                        return plugin.workService()
-                                                .changeStatus(player.getUniqueId(), automation.joinStatus());
+                                        return plugin.workService().changeStatus(uuid, automation.joinStatus());
                                     }
                                     return java.util.concurrent.CompletableFuture.completedFuture(result);
                                 })
-                                .thenRun(() -> plugin.placeholderCache().refresh(player.getUniqueId()));
+                                .thenRun(() -> plugin.placeholderCache().refresh(uuid));
                     } else {
-                        plugin.placeholderCache().refresh(player.getUniqueId());
+                        plugin.placeholderCache().refresh(uuid);
                     }
                     scheduleAfkCheck(player);
                 }));
