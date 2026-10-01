@@ -15,7 +15,7 @@ jobs:
       - name: Получение исходного кода
         uses: actions/checkout@v6
       - name: Установка Java 21
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '21'
